@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css?family=Kirang+Haerang|Lato');
+
+$cor-tema : #002A22;
+
+body{
+  font-family: 'Lato', sans-serif;
+}
+
+
+
+.none-mobile{
+  display: flex
+}
+
+.none-desk{
+  display: none
+}
+
+.main {
+  display: flex;
+  width: 100%;
+  &-content {
+    width: 85%;
+    margin-left: 15%;
+    &-top{
+      display: none;
+    }
+  }
+  &-sidebar {
+    width: 15%;
+    position: fixed;
+  }
+}
+
+.col{
+  &-1{
+
+    margin: 5px;
+    width: 8.3333%
+  }
+  &-2{
+    margin: 5px;
+    width: 16.66666%
+  }
+  &-3{
+    margin: 5px;
+    width: 24%
+  }
+  &-4{
+    margin: 5px;
+    width: 33.3333%
+  }
+  &-5{
+    margin: 5px;
+    width: 41.66%
+  }
+  &-6{
+    margin: 5px;
+    width: 46.5%
+  }
+  &-7{
+    margin: 5px;
+    width: 58.3333%
+  }
+  &-8{
+    margin: 5px;
+    width: 66.6666%
+  }
+  &-9{
+    margin: 5px;
+    width: 75%
+  }
+  &-10{
+    margin: 5px;
+    width: 83.3333%
+  }
+  &-11{
+    margin: 5px;
+    width: 91.66%
+  }
+  &-12{
+    margin: 5px;
+    width: 100%
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .col-sm{
+    &-1{
+  
+      margin: 5px !important;
+      width: 8.3333% !important
+    }
+    &-2{
+      margin: 5px !important;
+      width: 16.66666% !important
+    }
+    &-3{
+      margin: 5px !important;
+      width: 24% !important
+    }
+    &-4{
+      margin: 5px !important;
+      width: 33.3333% !important
+    }
+    &-5{
+      margin: 5px !important;
+      width: 41.66% !important
+    }
+    &-6{
+      margin: 5px !important;
+      width: 46.5% !important
+    }
+    &-7{
+      margin: 5px !important;
+      width: 58.3333% !important
+    }
+    &-8{
+      margin: 5px !important;
+      width: 66.6666% !important
+    }
+    &-9{
+      margin: 5px !important;
+      width: 75% !important
+    }
+    &-10{
+      margin: 5px !important;
+      width: 83.3333% !important
+    }
+    &-11{
+      margin: 5px !important;
+      width: 91.66% !important
+    }
+    &-12{
+      margin: 5px !important;
+      width: 100% !important
+    }
+  }
+
+  .none-mobile{
+    display: none !important
+  }
+  .none-desk{
+    display: block !important
+  }
+
+  .main {
+    display: flex;
+    width: 100%;
+    &-content {
+      width: 100% !important;
+      margin-left: 0 !important;
+      &-top{
+        display: block
+      }
+    }
+    &-sidebar {
+      display: none !important;
+    }
+  }
+}
+
+.justify-content{
+  &-end{
+    justify-content: flex-end;
+  }
+  &-start{
+    justify-content: flex-start;
+  }
+  &-around{
+    justify-content: space-around;
+  }
+  &-between{
+    justify-content: space-between;
+  }
+}
+
+.align{
+  &-center{
+    align-items: center;
+  }
+  &-down{
+    align-items: flex-end;
+  }
+  &-up{
+    align-items: flex-start;
+  }
+}
+
+.btn{
+  border: #002A22;
+  border-radius: 3px;
+  padding: 15px 25px;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.493);
+  &-success{
+    background-color: #26A69A;
+    color: #fff;
+    &:hover{
+      transition: 0.2s;
+      background-color: #25caba;
+    }
+  }
+  &-warning{
+    background-color: #FF8800;
+    color: #fff;
+    &:hover{
+      transition: .2s;
+      background-color: #ffbb33;
+    }
+  }
+  &-danger{
+    background-color: #FF3547;
+    color: #fff;
+    &:hover{
+      transition: .2s;
+      background-color: #CC0000;
+    }
+  }
+}
+// font-family: 'Kirang Haerang', cursive;
+.card {
+  background-color: #fff;
+  box-shadow: 1px 1px 10px #c9c9c9;
+  border-radius: 5px;
+  padding: 5px 10px;
+  // margin: .5rem;
+  &-title{
+    font-size: 20px;
+    font-weight: 500;
+    border-bottom: 1px solid #c9c9c9
+  }
+  &-header{
+    padding: .5rem
+  }
+  &-content{
+    padding: 1rem
+  }
+}
+
+.border{
+  border-left: 1px solid #c9c9c9;
+}
+.row{
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  .tableheader{
+    border-bottom: 1px solid #c9c9c9;
+    .table-title{
+      margin: 0
+    }
+  }
+  &-table{
+    background-color: #c7c7c77e;
+    border:0.5px solid #c9c9c9;
+  }
+}
+
+.form-group{
+  display: flex;
+  flex-direction: column;
+  margin: 10px 10px;
+}
+.control{
+  &-input{
+  background-color: transparent;
+  border: 1px solid #c9c9c9;
+  border-radius: 3px;
+  padding: 10px
+  }
+  &-label{
+    font-size: 14px;
+    width: 100%;
+    color: #4a484c;
+    font-weight: 600;
+    padding-bottom: 5px;
+  }
+}
+body{
+  background-color: hsl(0, 0%, 95%)
+}
