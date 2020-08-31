@@ -105,7 +105,6 @@
 </template>
 <script>
 	import axios from 'axios';
-
 	let endpoint = "http://localhost:3000"
 
   export default {
@@ -166,7 +165,6 @@
         if (this.pagamento.tipo == 1) {
           alert(`Pagamento total da Mesa R$ ${this.mesa.total_valor.toFixed(2)}`)
           this.deletaComanda(this.mesa)
-
         } else {
           let valorParcialTotal = this.mesa.total_valor_pessoa * this.pagamento.quantidade_pagantes
           alert(
@@ -221,8 +219,16 @@
           tipo: '',
           quantidade_pagantes: ''
         },
+        cliente: {
+          id: '',
+          name: '',
+          eth_id: '',
+          mesa: '',
+          saldo_mesa:'',
+        },
         mesa: {
-          num_pessoas: '',
+          id:'',
+          cliente: [],
           pedidos: [],
           total_valor: '',
           total_valor_pessoa: '',

@@ -2,27 +2,49 @@
   "users": [
     {
       "id": 1,
-      "name": "roy",
-      "location": "india"
+      "name": "douglas",
+      "eth_id": "xxxxvvvv",
+      "mesa": "",
+      "saldo_mesa": ""
     },
     {
       "id": 2,
-      "name": "sam",
-      "location": "wales"
+      "name": "luis",
+      "eth_id": "xxxxvvvv",
+      "mesa": "",
+      "saldo_mesa": ""
+    },
+    {
+      "id": 3,
+      "name": "suzana",
+      "eth_id": "xxxxvvvv",
+      "mesa": "",
+      "saldo_mesa": ""
+    },
+    {
+      "id": 4,
+      "name": "arlindo",
+      "eth_id": "xxxxvvvv",
+      "mesa": "",
+      "saldo_mesa": ""
     }
   ],
   "produtos": [
     {
-      "nome": "Mr. Burguer",
-      "valor": 34
+      "nome": "Batata",
+      "valor": 25
     },
     {
-      "nome": "Mr. Bacon",
-      "valor": 45
+      "nome": "Cerveja",
+      "valor": 12
     },
     {
-      "nome": "Mr. Costela",
-      "valor": 54
+      "nome": "Suco",
+      "valor": 8
+    },
+    {
+      "nome": "Carnes",
+      "valor": 35
     }
   ],
   "comandas": [
@@ -30,136 +52,14 @@
       "num_pessoas": 2,
       "pedidos": [
         {
-          "nome": "Mr. Burguer",
-          "valor": 34,
-          "quantidade": "5"
-        },
-        {
-          "nome": "Mr. Burguer",
-          "valor": 34,
-          "quantidade": "5"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "5"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "5"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "5"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "5"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "2"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "0"
-        },
-        {
-          "nome": "Mr. Burguer",
-          "valor": 34,
-          "quantidade": "0"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "0"
+          "nome": "Batata",
+          "valor": 25,
+          "quantidade": "4"
         }
       ],
-      "total_valor": 1330,
-      "total_valor_pessoa": "665.00",
-      "id": 3
-    },
-    {
-      "num_pessoas": 3,
-      "pedidos": [
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "2"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "2"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "2"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "2"
-        }
-      ],
-      "total_valor": 360,
-      "total_valor_pessoa": "120.00",
-      "id": 5
-    },
-    {
-      "num_pessoas": 4,
-      "pedidos": [
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "5"
-        }
-      ],
-      "total_valor": 225,
-      "total_valor_pessoa": "56.25",
-      "id": 6
-    },
-    {
-      "num_pessoas": 3,
-      "pedidos": [
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "5"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "5"
-        },
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "5"
-        }
-      ],
-      "total_valor": 675,
-      "total_valor_pessoa": "225.00",
-      "id": 7
-    },
-    {
-      "num_pessoas": 1,
-      "pedidos": [
-        {
-          "nome": "Mr. Bacon",
-          "valor": 45,
-          "quantidade": "2"
-        }
-      ],
-      "total_valor": 45,
-      "total_valor_pessoa": "45.00",
-      "id": 8
+      "total_valor": 50,
+      "total_valor_pessoa": "25.00",
+      "id": 1
     }
   ]
 }

@@ -57,7 +57,6 @@
   </div>
 </div>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -73,7 +72,6 @@ export default {
       this.$router.push({name: 'Editar Mesa' , params: comanda})
     },
     deletaComanda(comanda,index){
-
       this.comandas.find(e => {
         if(e.id == comanda.id){
           this.comandas.splice(index,1);
@@ -88,17 +86,19 @@ export default {
     chamaComandas(){
       axios.get(`${endpoint}/comandas`)
       .then(response => {
-      this.comandas = response.data
-      if(this.comandas.length>1){
-        this.faturamento = this.comandas.reduce(function (soma, m) {
-            return soma + m.total_valor;
-            console.log(m.total_valor)
-          }, 0)
-      }else{
-        this.faturamento = this.comandas[0].total_valor
-      }
+        this.comandas = response.data
+        if(this.comandas.length>1){
+          this.faturamento = this.comandas.reduce(
+            function (soma, m) {
+                return soma + m.total_valor;
+                console.log(m.total_valor)
+            },
+            0
+          )
+        }else{
+          this.faturamento = this.comandas[0].total_valor
+        }
       }).catch(e => { console.log(` error ==> ${e}`)})
-       
     },
   },
   mounted(){
