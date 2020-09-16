@@ -11,12 +11,22 @@
               <div class="form-group col-6 col-sm-12">
                 <label class="control-label" for="">Produtos</label>
                 <select class="control-input" v-model="produto" name="" id="">
-                  <option v-for="produto in produtos" :key="produto" :value="produto">{{produto.nome}}</option>
+                  <option v-for="p in produtos" :key="p.ProductID" :value="p">{{p.Name}}</option>
+                </select>
+              </div>
+              <div class="form-group col-6 col-sm-12">
+                <label class="control-label" for="">Usuarios</label>
+                <select class="control-input" v-model="user" name="" id="">
+                  <option v-for="user in users" :key="user.UserID" :value="user">{{user.Name}}</option>
                 </select>
               </div>
               <div class="form-group col-6 col-sm-12 ">
                 <label class="control-label" for="">Quantidade</label>
-                <input class="control-input" type="number" v-model="produto.quantidade">
+                <input class="control-input" type="number" min="1" v-model="produto.quantidade">
+              </div>
+              <div class="form-group col-6 col-sm-12 ">
+                <label class="control-label" for="">Valor</label>
+                <input class="control-input" type="number" min="1" v-model="produto.valor">
               </div>
             </div>
             <div class="row align-down justify-content-between">
@@ -106,33 +116,100 @@
 <script>
 	import axios from 'axios';
 	let endpoint = "http://localhost:3000"
-
+  import mixin from '../../../libs/mixinViews';
   export default {
+    mixins: [mixin],
 		created(){
-			this.chamaProdutos()
+			this.chamaProdutos();
+      this.chamaUsuarios();
+      this.chamaRestaurante();
 			if(this.$route.params.id){
-				console.log(this.$route.params)
-				this.mesa = this.$route.params
+				console.log(this.$route.params);
+				this.mesa = this.$route.params;
 			}
 		},
     methods: {
+      showErrorMessage(err) {
+                console.error(err);
+
+                this.errorStr = null;
+
+                if (err) this.errorStr = err.toString();
+
+                if (! this.errorStr) this.errorStr = 'Error occurred!';
+            },
 			chamaProdutos(){
 				axios.get(`${endpoint}/produtos`)
-				.then(response => {
-				this.produtos = response.data
-				}).catch(e => { console.log(` error ==> ${e}`)})
+  				.then(response => {
+  				  this.produtos = response.data
+            //console.log(this.produtos);
+  				}).catch(e => { console.log(` error ==> ${e}`)})
 			},
-      adicionaProduto() {
-        if (this.produto.quantidade) {
+      chamaUsuarios(){
+        axios.get(`${endpoint}/users`)
+          .then(response => {
+            this.users = response.data
+          }).catch(e => { console.log(` error ==> ${e}`)})
+      },
+      chamaRestaurante(){
+        axios.get(`${endpoint}/m_Restaurant/0`)
+          .then(response => {
+            this.m_Restaurant = response.data;
+            //console.log("This Response Data");
+            //console.log(response.data);
+            //console.log("This Restaurante");
+            console.log(this.m_Restaurant);
+          }).catch(e => { console.log(` error ==> ${e}`)})
+      },
+      atualizaM_Restaurant(){
+        this.m_Restaurant.total_bc_orders = this.bc_orders.lengh - 1;
+        axios.put(  `${endpoint}/m_Restaurant/0`, this.m_Restaurant)
+                .then(response => {})
+                .catch(e => {
+                   if(e){
+                    this.errors.push(e);
+                    console.log(e);
+                  } else console.log("m_Restaurant updated");
+                })
+      },
+      place_bc_orders(order){
+        console.log("Placing order starts ");
+        axios.get(`${endpoint}/bc_orders`)
+          .then(response => {
+            this.bc_orders = response;
+            order.OrderID = response.lengh;
+            axios.post(`${endpoint}/bc_orders`, order)
+                    .then(response => {
+                      this.m_Restaurant.total_bc_orders++;
+                      this.atualizaM_Restaurant();
+                    });
+            console.log("Order Placed");
+            console.log(order);
+          }).catch(e => { console.log(` error ==> ${e}`)})
+      },
+      adicionaProduto() { //place order
+        
+        let order = {
+                    OrderID: this.m_Restaurant.total_bc_orders,
+                    ProductID: parseInt(this.produto.ProductID),
+                    CostumerID:  parseInt(this.user.UserID),
+                    Amount : parseInt(this.produto.quantidade),
+                    Value : parseInt(this.produto.valor)
+        };
+        this.place_bc_orders(order);
+
+        if(this.produto.quantidade) {
           this.mesa.pedidos.push(JSON.parse(JSON.stringify(this.produto)))
           this.atualizaPedidos();
         }
+
       },
       atualizaPedidos(){
           this.mesa.total_valor = this.mesa.pedidos.reduce(function (soma, m) {
             return soma + (m.valor * m.quantidade);
           }, 0)
           this.mesa.total_valor_pessoa = (this.mesa.total_valor / this.mesa.num_pessoas).toFixed(2)
+          this.m_Restaurant.total_valor+= this.mesa.total_valor;
       },
 			salvarLancamentos(){
 				if(this.mesa.id){
@@ -181,9 +258,16 @@
       return {
         produto: {
           quantidade: null,
-          nome: null,
-          valor: null
+          valor: null,
+          Name: null,
+          ProductID: null,
+          Address: 123
 				},
+        user: {
+          Name: null,
+          UserID:null,
+          Address:null,
+        },
 				posts:null,
         numero_pessoas: [{
             value: 1,
@@ -233,7 +317,14 @@
           total_valor: '',
           total_valor_pessoa: '',
         },
-				produtos:null
+				produtos:[],
+        users:[],
+        bc_orders:[],
+        m_Restaurant : {
+          "id" : 0,
+          "total_valor" : 0,
+          "total_bc_orders": 0
+        }
       };
     },
   };

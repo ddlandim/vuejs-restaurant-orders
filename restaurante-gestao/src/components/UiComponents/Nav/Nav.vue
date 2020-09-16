@@ -4,6 +4,12 @@
       <div class="nav-home">
         <router-link to="/visao-geral"  class="btn-mobile">Home</router-link>
       </div>
+      <div class="nav-home">
+        <router-link to="/register"  class="btn-mobile">Meu_Perfil</router-link>
+      </div>
+      <div class="nav-home">
+        <router-link to="/List"  class="btn-mobile">BlockChain</router-link>
+      </div>
       <ul class="nav-box">
         <li v-for="item in links" :key="item.id">
           <a v-link="item.router" class="nav-box--link">{{item.name}}</a>
@@ -19,11 +25,11 @@
     data() {
       return {
         links: [
-          {
-            id: 1,
-            name: 'Sair',
-            router: 'Lista Mesas'
-          }
+          // {
+          //   id: 1,
+          //   name: 'Sair',
+          //   router: 'Lista Mesas'
+          // } 
         ]
       };
     },

@@ -34,13 +34,13 @@
             <h4 class="table-title">Numero</h4>
           </div>
           <div class="col-2 col-sm-2 none-mobile">
-            <h4 class="table-title">Nº de Pessoas</h4>
+            <h4 class="table-title">N de Pessoas</h4>
           </div>
           <div class="col-2 col-sm-2 ">
             <h4 class="table-title">Valor</h4>
           </div>
           <div class="col-5 col-sm-7">
-            <h4 class="table-title">Ação</h4>
+            <h4 class="table-title">Acao</h4>
           </div>
         </div>
         <div class="row row-table align-center" v-for="(comanda,index) in comandas" :key="comanda.id">
@@ -57,6 +57,7 @@
   </div>
 </div>
 </template>
+
 <script>
 import axios from 'axios';
 
@@ -72,6 +73,7 @@ export default {
       this.$router.push({name: 'Editar Mesa' , params: comanda})
     },
     deletaComanda(comanda,index){
+
       this.comandas.find(e => {
         if(e.id == comanda.id){
           this.comandas.splice(index,1);
@@ -86,19 +88,17 @@ export default {
     chamaComandas(){
       axios.get(`${endpoint}/comandas`)
       .then(response => {
-        this.comandas = response.data
-        if(this.comandas.length>1){
-          this.faturamento = this.comandas.reduce(
-            function (soma, m) {
-                return soma + m.total_valor;
-                console.log(m.total_valor)
-            },
-            0
-          )
-        }else{
-          this.faturamento = this.comandas[0].total_valor
-        }
+      this.comandas = response.data
+      if(this.comandas.length>1){
+        this.faturamento = this.comandas.reduce(function (soma, m) {
+            return soma + m.total_valor;
+            console.log(m.total_valor)
+          }, 0)
+      }else{
+        this.faturamento = this.comandas[0].total_valor
+      }
       }).catch(e => { console.log(` error ==> ${e}`)})
+       
     },
   },
   mounted(){
