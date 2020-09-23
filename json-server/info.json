@@ -54,63 +54,16 @@
           "CreatedAt": "2020-09-16T13:40:47.000Z",
           "UpdatedAt": "2020-09-16T13:40:47.000Z",
           "id": 1,
-          "quantidade": "2",
+          "quantidade": "1",
           "valor": "2"
-        },
-        {
-          "ProductID": 3,
-          "Name": "Batata",
-          "Status": "Produto",
-          "Address": "0xf057dbb5e5e681104c4b43962e2795a1aad196df",
-          "CreatedAt": "2020-09-16T13:40:47.000Z",
-          "UpdatedAt": "2020-09-16T13:40:47.000Z",
-          "id": 1,
-          "quantidade": "2",
-          "valor": "8"
         }
       ],
-      "total_valor": 24,
-      "total_valor_pessoa": "12.00",
-      "num_pessoas": 2
+      "total_valor": 6,
+      "total_valor_pessoa": "6.00",
+      "num_pessoas": 1
     }
   ],
-  "bc_orders": [
-    {
-      "ProductID": 3,
-      "CostumerID": 2,
-      "Amount": 2,
-      "Value": 2,
-      "id": 1
-    },
-    {
-      "ProductID": 3,
-      "CostumerID": 1,
-      "Amount": 2,
-      "Value": 2,
-      "id": 2
-    },
-    {
-      "ProductID": 3,
-      "CostumerID": 2,
-      "Amount": 2,
-      "Value": 8,
-      "id": 3
-    }
-  ],
-  "m_Restaurant": [
-    {
-      "id": 0,
-      "total_valor": 65,
-      "total_bc_orders": null
-    }
-  ],
-  "m_Blockchain": [
-    {
-      "id": 0,
-      "totalUsers": 0,
-      "totalOrders": 0,
-      "totalConsulted": 0,
-      "totalPaid": 0
-    }
-  ]
+  "bc_orders": [],
+  "m_Restaurant": [],
+  "m_Blockchain": []
 }

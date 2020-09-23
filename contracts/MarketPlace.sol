@@ -166,7 +166,7 @@ contract MarketPlace {
         );
     }
 
-    function getOrderById(uint _id) public view
+    function getOrderById(uint _id) public payable
     returns(
         uint,
         bytes32,
@@ -178,7 +178,10 @@ contract MarketPlace {
     ) {
         // checking if the ID is valid
         require( (_id > 0) || (_id <= orders.length) );
-        string memory name = "user";
+        orders[_id].consulted++;
+        users[ usersIds[ orders[_id].costumer ] ].consulted++;
+        users[ usersIds[ orders[_id].supplier ] ].consulted++;
+        users[ usersIds[ Contract_owner    ] ].consulted++;
         Order memory o = orders[_id];
         return (
             _id,

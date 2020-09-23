@@ -8,28 +8,52 @@
 
         <h2 v-show="(isLoading && bcConnected)">Loading...</h2>
 
-        <table class="table table-striped" v-show="!isLoading">
-            <thead class="thead-dark">
-                <tr>
-                    <th>User ID</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Address</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="user in users">
-                    <td>{{ user[0].toNumber() }}</td>
-                    <td>{{ user[1] }}</td>
-                    <td>{{ toAscii(user[2]) }}</td>
-                    <td>{{ user[3] }}</td>
-                    <td>{{ toDate( user[4].toNumber() ) }}</td>
-                    <td>{{ toDate( user[5].toNumber() ) }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="col-md-3" v-if = "autorizedSuppliers" >
+            <table class="table table-striped" v-show="!isLoading">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Address</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in users">
+                        <td>{{ user[0].toNumber() }}</td>
+                        <td>{{ user[1] }}</td>
+                        <td>{{ toAscii(user[2]) }}</td>
+                        <td>{{ user[3] }}</td>
+                        <td>{{ toDate( user[4].toNumber() ) }}</td>
+                        <td>{{ toDate( user[5].toNumber() ) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3" v-if = "autorizedUsers" >
+            <table class="table table-striped" v-show="!isLoading">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>User ID</th>
+                        <th>Status</th>
+                        <th>Address</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in users">
+                        <td>{{ user[0].toNumber() }}</td>
+                        <td>{{ toAscii(user[2]) }}</td>
+                        <td>{{ user[3] }}</td>
+                        <td>{{ toDate( user[4].toNumber() ) }}</td>
+                        <td>{{ toDate( user[5].toNumber() ) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>    
     </div>
 </template>
 <script>
@@ -47,6 +71,8 @@
 
         data() {
             return {
+                userId: 2,
+                bc_totalOrders: 0,
                 users: [], // array that stores all the registered users
                 isLoading: true, // true when the user list is loading form the blockchain
                 bcConnected: false, // blockchain is connected ()
@@ -63,14 +89,27 @@
                 total_bc_orders : 0,
                 m_Restaurant : {},
                 m_Blockchain : {},
+                userStatus: ''
             }
+        },
+         computed: {
+
+            autorizedSuppliers(){
+                this.getProfile();
+                return(
+                    this.userId < 2
+                );
+            },
+            autorizedUsers(){
+                this.getProfile();
+                return(
+                    this.userId >= 2
+                );
+            },
         },
 
         methods: {
-            /**
-             * Get the list of the registered users once the connection to the
-             * blockchain is established.
-             */
+
             showErrorMessage(err) {
                 console.error(err);
 
@@ -186,18 +225,12 @@
 
             },
 
-            /**
-             * It reloads the user list.
-             */
             reloadList() {
                 this.users = [];
 
                 this.getUserList();
             },
 
-            /**
-             * Get all users.
-             */
             getAllUsers(callback) {
                 // getting the total number of users stored in the blockchain
                 // calling the method totalUsers from the smart contract
@@ -217,11 +250,34 @@
                         } // end for
                     } // end if
                 }); // end totalUsers call
-            }
+            },
+            getTotalBc_Orders(){
+                window.bc.contract().totalOrders((err, total) => {
+                    var tot = 0;
+                    if (total) tot = total.toNumber();
 
+                    if (tot > 0) {
+                        // getting the user one by one
+                        this.bc_totalOrders = tot;
+                    } // end if
+                });
+            },
+            getProfile() {
+                window.bc.getMainAccount().then(account => {
+                    window.bc.contract().getOwnProfile.call({ from: account },
+                        (error, userDet) => {
+                            if (userDet) {
+                                this.userId = userDet[0].toNumber();
+                            }
+                            this.setErrorMessage(error);
+                        }
+                    );
+                });
+            }//last method
         }, // end methods
 
         created() {
+            this.getProfile();
             this.chamaProdutos();
             this.chamaUsuarios();
             this.chamaBc_Orders();

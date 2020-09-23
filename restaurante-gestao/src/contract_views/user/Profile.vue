@@ -42,10 +42,22 @@
                     <strong>Paid</strong>: {{ paid }} ETH
                 </p>
             </div>
+            <div class="col-md-3">
+                <h3>MINING DATA FROM BLOCKCHAIN</h3><hr>
+
+                <p>
+                    <strong>TOTAL ORDERS IN BLOCKCHAIN : </strong> {{ bc_totalOrders }} 
+                </p>
+                <div class="form-group">
+                    <label for="description">Get one order info</label>
+                    <input class="form-control" placeholder="Enter Order ID" type="text" v-model="order_to_consult">
+                </div>
+                <button class="btn btn-primary" @click="getBc_Order">Get Order ID</button>
+
+            </div>
 
             <div class="col-md-3" v-if = "autorizedSuppliers" >
                     <h3>Contract Owner Section</h3><hr>
-
                     <p><strong>Orders to send to blockchain</strong></p>
                     <table class="table table-striped" v-show="!isLoading">
                         <thead class="thead-dark">
@@ -67,6 +79,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <button class="btn btn-primary" @click="performPlaceOrderID">PlaceOrders</button>
             </div>
 
              <div class="col-md-3" v-if = "autorizedUsers" >
@@ -127,8 +140,11 @@
                 bc_orders : [],
                 total_bc_orders : 0,
                 m_Restaurant : {},
-                m_Blockchain : {}
-            }
+                m_Blockchain : {},
+
+                order_to_consult : 0,
+                consulted_order : {}
+            } 
         },
 
         computed: {
@@ -147,7 +163,7 @@
             },
             autorizedSuppliers(){
                 return(
-                    this.userId == 1
+                    this.userId < 2
                 );
             },
             autorizedUsers(){
@@ -168,18 +184,10 @@
         },
 
         methods: {
-            /**
-             * Get the profile details of the user.
-             * This methos calls the smart contract function getOwnProfile
-             * and it returns the user details where:
-             *      userDet[0] => uint     user ID
-             *      userDet[1] => string   user's name
-             *      userDet[2] => bytes32  user's status
-             *
-             * @return {void}
-             */
+
             getProfile() {
                 window.bc.getMainAccount().then(account => {
+                    //get user profile info
                     window.bc.contract().getOwnProfile.call({ from: account },
                         (error, userDet) => {
                             if (userDet) {
@@ -194,6 +202,15 @@
                             this.setErrorMessage(error);
                         }
                     );
+                    // get total orders
+                    window.bc.contract().totalOrders((err, total) => {
+                        var tot = 0;
+                        if (total) tot = total.toNumber();
+
+                        if (tot > 0) {
+                            this.bc_totalOrders = tot;
+                        } // end if
+                    });
                 });
             },
             whatIAm(){
@@ -234,11 +251,6 @@
                 }
             },
 
-            /**
-             * Updates the user's details when the button is pressed.
-             *
-             * @return {void}
-             */
             performSubmit() {
                 this.submitting = true;
                 this.errorMessage = null;
@@ -291,29 +303,65 @@
                         console.log(order);
                     }).catch(e => { console.log(` error ==> ${e}`)});
             },
-
-            getBc_Orders(id){
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+            getBc_Order(){
+                console.log(this.order_to_consult);
+                
+                window.bc.contract().getOrderById(
+                    this.order_to_consult,
+                    { 
+                        from: this.userAddressAccount,
+                        gas: 800000
+                    },
+                        (error, Order) => {
+                            if (Order) {
+                                this.consulted_order = Order;
+                                console.log(this.consulted_order);
+                            }
+                            this.setErrorMessage(error);
+                        }
+                    );
 
             },
-
             performPlaceOrderID() {
                 this.submitting = true;
                 this.errorMessage = null;
                 this.successSave = false;
-                
 
-
-                // window.bc.contract().placeOrderID(    
-                // )
+                this.bc_orders.forEach( (element,index,array) => { 
+                    console.log(element.ProductID);
+                    console.log(element.CostumerID);
+                    console.log(element.Amount);
+                    console.log(element.Value);
+                    window.bc.contract().placeOrderID(
+                        element.ProductID,
+                        element.CostumerID,
+                        element.Amount,
+                        element.Value,
+                        {
+                            from: this.userAddressAccount,
+                            gas: 800000
+                        },
+                        (err, txHash) => {
+                            this.handleSubmitResult(err, txHash)
+                            console.log("order place delete error");
+                            console.log(err);
+                            if(!err){
+                                axios.delete(`${endpoint}/bc_orders/${element.id}`)
+                                .then(response => {})
+                                .catch(e => {
+                                    if(e){
+                                        console.log("axios delete error");
+                                        console.log(e);
+                                    }
+                                })
+                            }
+                        }
+                    );
+                });//end loop
             },
-
-            /**
-             * Handle the result of the response of updateUser.
-             *
-             * @param {object} err
-             * @param {string} txHash
-             * @return {void}
-             */
             handleSubmitResult(error, txHash) {
                 this.submitting = false;
 
@@ -324,11 +372,6 @@
                 }
             },
 
-            /**
-             * It loads the general info (address and balance of the user).
-             *
-             * @return {void}
-             */
             getInfoBc() {
                 window.bc.loadInfo().then(info => {
                     this.userAddressAccount = info.mainAccount;
@@ -337,11 +380,6 @@
                 });
             },
 
-            /**
-             * It loads the user information once connected to the blockchian.
-             *
-             * @return {void}
-             */
             checkConnectionAndLoad() {
                 if (this.blockchainIsConnected()) {
                     // stopping the interval
@@ -351,11 +389,6 @@
                 }
             },
 
-            /**
-             * Load the user's info: user name, status and general info.
-             *
-             * @return {void}
-             */
             loadEverything() {
                 // checking if the user is registered
                 this.isRegistered()
@@ -366,7 +399,6 @@
                         this.getInfoBc();
                         this.whatIAm();
                     }
-
                     // if the user not registered the user will be redirected to the Register page
                     else this.$router.push("register");
                 })
@@ -379,7 +411,6 @@
 
         created() {
             // it will call the function checkConnectionAndLoad every 500ms
-            // until the connection to the blockchain is enstablished
             this.tmoConn = setInterval(() => {
                 this.checkConnectionAndLoad();
             }, 500);
