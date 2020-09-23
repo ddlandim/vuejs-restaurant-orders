@@ -36,7 +36,7 @@ contract MarketPlace {
         uint amount;
         uint value;
         uint timestamp;
-        
+         
         uint consulted;
     }
 
@@ -150,18 +150,44 @@ contract MarketPlace {
     ) {
         // checking if the ID is valid
         require( (_id > 0) || (_id <= users.length) );
-
+        string memory name = "user";
         User memory i = users[_id];
-
+        if(msg.sender == Contract_owner)
+            name = i.name;
         return (
             _id,
-            i.name,
+            name,
             i.status,
             i.walletAddress,
             i.createdAt,
             i.updatedAt,
             i.consulted,
             i.paid
+        );
+    }
+
+    function getOrderById(uint _id) public view
+    returns(
+        uint,
+        bytes32,
+        bytes32,
+        bytes32,
+        uint,
+        uint,
+        uint
+    ) {
+        // checking if the ID is valid
+        require( (_id > 0) || (_id <= orders.length) );
+        string memory name = "user";
+        Order memory o = orders[_id];
+        return (
+            _id,
+            o.product_name,
+            o.costumer_category,
+            o.supplier_category,
+            o.amount,
+            o.value,
+            o.timestamp
         );
     }
 
@@ -297,10 +323,8 @@ contract MarketPlace {
         payable public returns (int)
         {
 
-            // int min_payment = int((109206 * reduceOrdersCheck(_product_name,_costumer_category,_begin,_end) ) + 3);
             
-            // if ( int(msg.value) < min_payment )
-            //     return int(msg.value) - min_payment ;
+            //Receive(msg.value);
             balance += msg.value;
             uint amount = 0;
             uint temp_amount = 0;

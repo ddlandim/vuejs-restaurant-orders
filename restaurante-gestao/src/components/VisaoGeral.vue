@@ -73,7 +73,6 @@ export default {
       this.$router.push({name: 'Editar Mesa' , params: comanda})
     },
     deletaComanda(comanda,index){
-
       this.comandas.find(e => {
         if(e.id == comanda.id){
           this.comandas.splice(index,1);

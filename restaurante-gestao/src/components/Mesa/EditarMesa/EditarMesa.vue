@@ -185,7 +185,7 @@
                     });
             console.log("Order Placed");
             console.log(order);
-          }).catch(e => { console.log(` error ==> ${e}`)})
+          }).catch(e => { console.log(` error ==> ${e}`)});
       },
       adicionaProduto() { //place order
         

@@ -45,7 +45,6 @@
 
             <div class="col-md-3" v-if = "autorizedSuppliers" >
                     <h3>Contract Owner Section</h3><hr>
-                    <button class="btn btn-primary" :disabled="disablePay" @click="performPay">PayUsers</button>
 
                     <p><strong>Orders to send to blockchain</strong></p>
                     <table class="table table-striped" v-show="!isLoading">
